@@ -13,17 +13,21 @@
         android:allowBackup="false"
         android:icon="@mipmap/tc_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/tc_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true"
-        tools:ignore="AllowBackup"
-        >
+        tools:ignore="AllowBackup">
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomNoActionBarTheme"/>
         <activity
             android:name=".activities.TestingLocationListActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/CustomNoActionBarTheme"
-            android:exported="false" />
+            android:theme="@style/CustomNoActionBarTheme" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -37,7 +41,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
+            android:value="@string/google_maps_api_key" />
 
         <activity
             android:name=".activities.MainActivity"
@@ -61,7 +65,7 @@
             android:theme="@style/CustomNoActionBarTheme" />
         <activity
             android:name=".activities.MapActivity"
-            android:label="Test Location on Map"
+            android:label="TEST LOCATION MAP"
             android:screenOrientation="portrait"
             android:theme="@style/CustomNoActionBarTheme" />
     </application>

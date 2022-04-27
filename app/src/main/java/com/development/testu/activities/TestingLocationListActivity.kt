@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.development.testu.Constants
 import com.development.testu.R
 import com.development.testu.adapters.TestingLocationsAdapter
 import com.development.testu.database.DatabaseHandler
@@ -20,21 +21,23 @@ import kotlinx.android.synthetic.main.activity_testing_location_list.*
 
 class TestingLocationListActivity : AppCompatActivity() {
 
+
     /**
      * This function is auto created by Android when the Activity Class is created.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         //This call the parent constructor
         super.onCreate(savedInstanceState)
-
+        var userId: String = intent.getStringExtra(Constants.USER_ID).toString()
         // This is used to align the xml view to this class
         setContentView(R.layout.activity_testing_location_list)
 
 
         // Setting an click event for Fab Button and calling the AddTestingLocationActivity.
         fabAddTestingLocation.setOnClickListener {
-            val intent = Intent(this@TestingLocationListActivity, AddTestingLocationActivity::class.java)
 
+            val intent = Intent(this@TestingLocationListActivity, AddTestingLocationActivity::class.java)
+            intent.putExtra(Constants.USER_ID, userId)
             startActivityForResult(intent, ADD_PLACE_ACTIVITY_REQUEST_CODE)
         }
 
@@ -44,7 +47,7 @@ class TestingLocationListActivity : AppCompatActivity() {
     // Call Back method  to get the Message form other Activity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
+        var userId: String = intent.getStringExtra(Constants.USER_ID).toString()
         // check if the request code is same as what is passed  here it is 'ADD_PLACE_ACTIVITY_REQUEST_CODE'
         if (requestCode == ADD_PLACE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
@@ -64,10 +67,13 @@ class TestingLocationListActivity : AppCompatActivity() {
 
         val getTestingLocationsList = dbHandler.getTestingLocationsList()
 
-        if (getTestingLocationsList.size > 0) {
+
+        if (getTestingLocationsList!!.size > 0) {
             rv_testing_locations_list.visibility = View.VISIBLE
             tv_no_records_available.visibility = View.GONE
-            setupTestingLocationsRecyclerView(getTestingLocationsList)
+            if (getTestingLocationsList != null) {
+                setupTestingLocationsRecyclerView(getTestingLocationsList)
+            }
         } else {
             rv_testing_locations_list.visibility = View.GONE
             tv_no_records_available.visibility = View.VISIBLE
@@ -111,7 +117,7 @@ class TestingLocationListActivity : AppCompatActivity() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = rv_testing_locations_list.adapter as TestingLocationsAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
-
+                var userId: String = intent.getStringExtra(Constants.USER_ID).toString()
                 getTestingLocationsListFromLocalDB() // Gets the latest list from the local database after item being delete from it.
             }
         }

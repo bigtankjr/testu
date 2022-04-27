@@ -22,20 +22,19 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.development.testu.database.DatabaseHandler
+import com.development.testu.models.TestingLocationModel
+import com.development.testu.utils.GetAddressFromLatLng
 import com.google.android.gms.location.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.development.testu.R
-import com.development.testu.database.DatabaseHandler
-import com.development.testu.utils.GetAddressFromLatLng
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.development.testu.models.TestingLocationModel
 import kotlinx.android.synthetic.main.activity_add_testing_location.*
 import java.io.File
 import java.io.FileOutputStream
@@ -43,6 +42,7 @@ import java.io.IOException
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import com.development.testu.R
 
 class AddTestingLocationActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -136,6 +136,7 @@ class AddTestingLocationActivity : AppCompatActivity(), View.OnClickListener {
         btn_save.setOnClickListener(this)
         et_location.setOnClickListener(this)
         tv_select_current_location.setOnClickListener(this)
+        tv_find_location.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -171,7 +172,7 @@ class AddTestingLocationActivity : AppCompatActivity(), View.OnClickListener {
             R.id.et_location -> {
                 try {
                     // These are the list of fields which we required is passed
-                    val fields = listOf(
+                    /*val fields = listOf(
                         Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG,
                         Place.Field.ADDRESS
                     )
@@ -179,12 +180,29 @@ class AddTestingLocationActivity : AppCompatActivity(), View.OnClickListener {
                     val intent =
                         Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                             .build(this@AddTestingLocationActivity)
-                    startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
+                    startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)*/
+                    onSearchCalled()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
-
+            R.id.tv_find_location -> {
+                try {
+                    // These are the list of fields which we required is passed
+                    /*val fields = listOf(
+                        Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG,
+                        Place.Field.ADDRESS
+                    )
+                    // Start the autocomplete intent with a unique request code.
+                    val intent =
+                        Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                            .build(this@AddTestingLocationActivity)
+                    startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)*/
+                    onSearchCalled()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
             R.id.tv_select_current_location -> {
 
                 if (!isLocationEnabled()) {
@@ -262,14 +280,14 @@ class AddTestingLocationActivity : AppCompatActivity(), View.OnClickListener {
                             val addTestingLocation = dbHandler.addTestingLocation(testingLocationModel)
 
                             if (addTestingLocation > 0) {
-                                setResult(Activity.RESULT_OK);
+                                setResult(Activity.RESULT_OK)
                                 finish()//finishing activity
                             }
                         } else {
                             val updateTestingLocation = dbHandler.updateTestingLocation(testingLocationModel)
 
                             if (updateTestingLocation > 0) {
-                                setResult(Activity.RESULT_OK);
+                                setResult(Activity.RESULT_OK)
                                 finish()//finishing activity
                             }
                         }
@@ -540,6 +558,17 @@ class AddTestingLocationActivity : AppCompatActivity(), View.OnClickListener {
             addressTask.getAddress()
             // END
         }
+    }
+
+    fun onSearchCalled(){
+        val fields = listOf(
+            Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG,
+            Place.Field.ADDRESS
+        )
+        val intent =
+            Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .build(this)
+        startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
     }
 
     companion object {

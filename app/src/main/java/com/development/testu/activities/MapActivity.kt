@@ -9,6 +9,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.development.testu.R
+import com.development.testu.activities.TestingLocationListActivity.Companion.EXTRA_PLACE_DETAILS
 import com.development.testu.models.TestingLocationModel
 import kotlinx.android.synthetic.main.activity_map.*
 
@@ -23,9 +24,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
 
-        if (intent.hasExtra(TestingLocationListActivity.EXTRA_PLACE_DETAILS)) {
+        if (intent.hasExtra(EXTRA_PLACE_DETAILS)) {
             mTestingLocationDetails =
-                intent.getParcelableExtra(TestingLocationListActivity.EXTRA_PLACE_DETAILS) as TestingLocationModel?
+                intent.getSerializableExtra(EXTRA_PLACE_DETAILS) as TestingLocationModel?
         }
 
         if (mTestingLocationDetails != null) {

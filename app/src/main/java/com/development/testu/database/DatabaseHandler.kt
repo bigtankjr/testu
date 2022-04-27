@@ -1,12 +1,15 @@
 package com.development.testu.database
 
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.development.testu.models.TestingLocationModel
+import com.development.testu.models.UserModel
 
 
 //creating the database logic, extending the SQLiteOpenHelper base class
@@ -17,6 +20,7 @@ class DatabaseHandler(context: Context) :
         private const val DATABASE_VERSION = 1 // Database version
         private const val DATABASE_NAME = "TestUDatabase" // Database name
         private const val TABLE_TESTING_LOCATION = "TestingLocationsTable" // Table Name
+        private const val TABLE_USER_IDENTITY = "UserIdentityTable" // Table Name
 
         //All the Columns names
         private const val KEY_ID = "_id"
@@ -27,10 +31,20 @@ class DatabaseHandler(context: Context) :
         private const val KEY_LOCATION = "location"
         private const val KEY_LATITUDE = "latitude"
         private const val KEY_LONGITUDE = "longitude"
+
+        private const val USER_ID = "user_id"
+        private const val USER_LOGIN = "user_login"
+        private const val USER_PASSWORD = "user_password"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
         //creating table with fields
+        val CREATE_TESTU_USER_IDENTITY_TABLE = ("CREATE TABLE " + TABLE_USER_IDENTITY + "("
+                + USER_ID + " INTEGER PRIMARY KEY,"
+                + USER_LOGIN + " TEXT,"
+                + USER_PASSWORD + " TEXT)")
+        db?.execSQL(CREATE_TESTU_USER_IDENTITY_TABLE)
+
         val CREATE_TESTU_LOCATIONS_TABLE = ("CREATE TABLE " + TABLE_TESTING_LOCATION + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_TITLE + " TEXT,"
@@ -41,10 +55,14 @@ class DatabaseHandler(context: Context) :
                 + KEY_LATITUDE + " TEXT,"
                 + KEY_LONGITUDE + " TEXT)")
         db?.execSQL(CREATE_TESTU_LOCATIONS_TABLE)
+
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db!!.execSQL("DROP TABLE IF EXISTS $TABLE_TESTING_LOCATION")
+
+        db!!.execSQL("DROP TABLE IF EXISTS $TABLE_USER_IDENTITY")
         onCreate(db)
     }
 
@@ -150,4 +168,84 @@ class DatabaseHandler(context: Context) :
         db.close() // Closing database connection
         return success
     }
+
+    fun insertData(username: String, password: String):Long{
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(USER_LOGIN, username)
+        contentValues.put(USER_PASSWORD, password)
+
+        val result = db.insert(TABLE_USER_IDENTITY, null, contentValues)
+        //2nd argument is String containing nullColumnHack
+
+        db.close() // Closing database connection
+        return result
+
+    }
+
+    fun checkUserName(username: String):Boolean{
+        val selectQuery = "select * from $TABLE_USER_IDENTITY  where $USER_LOGIN=?"
+
+
+        val db = this.readableDatabase
+        val params = arrayOf(username)
+
+        try {
+            val cursor:Cursor = db.rawQuery(selectQuery, params)
+            if (cursor.count > 0) {
+                return true
+            }
+            cursor.close()
+            } catch (e: SQLiteException) {
+                db.execSQL(selectQuery)
+                return false
+            }
+        return true
+    }
+
+    fun checkUserNamePassword(username: String,password: String):Boolean{
+        val selectQuery = "select * from  $TABLE_USER_IDENTITY where $USER_LOGIN=? and $USER_PASSWORD=?"
+
+        val db = this.readableDatabase
+        val params = arrayOf(username, password)
+        try {
+            val cursor:Cursor = db.rawQuery(selectQuery,params)
+            return cursor.count > 0
+            cursor.close()
+        } catch (e: SQLiteException) {
+            db.execSQL(selectQuery)
+            return false
+        }
+        return false
+    }
+
+    /*fun getUserId(username: String, password: String):String{
+        val selectQuery = "select * from  $TABLE_USER_IDENTITY where $USER_LOGIN=? and $USER_PASSWORD=?"
+
+        val db = this.readableDatabase
+        val params = arrayOf(username, password)
+        var userId =  -1
+
+
+        try {
+            val cursor:Cursor = db.rawQuery(selectQuery,params)
+            if (cursor.moveToFirst()) {
+                do {
+                    val user = UserModel(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(USER_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(USER_LOGIN)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(USER_PASSWORD))
+                    )
+                    userId = user.user_id
+                } while (cursor.moveToNext())
+            }
+
+            cursor.close()
+        } catch (e: SQLiteException) {
+            db.execSQL(selectQuery)
+            return "-1"
+        }
+
+        return userId.toString()
+    }*/
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TestU</string>
 
-    <string name="google_maps_api_key">AIzaSyAvrnHyEui2MKz7CpwbbBfoIMhCg0NjZeY</string>
+    <string name="google_maps_api_key">AIzaSyBZ1Tu1QTYS5YMs0vUiIpg59VyOaEqfPg4</string>
     <string name="login_message">Please</string>
     <string name="edit_text_hint_title">Title</string>
     <string name="edit_text_hint_description">Description</string>
@@ -18,6 +18,6 @@
     <string name="confirm_delete">Confirm Delete</string>
     <string name="delete_confirmation_message">Are you sure you want to delete this item?</string>
     <string name="app_title">TestU</string>
-    <string name="please_enter_your_name">Please enter your name.</string>
+    <string name="please_enter_your_name">Please enter your login information.</string>
     <string name="find_new_testing_location">FIND NEW LOCATION</string>
 </resources>
