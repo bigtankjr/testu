@@ -19,7 +19,7 @@
     <!--A support fragment is added for the map view.-->
     <fragment
         android:id="@+id/map"
-        class="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

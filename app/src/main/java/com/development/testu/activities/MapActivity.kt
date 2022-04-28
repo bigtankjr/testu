@@ -26,7 +26,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         if (intent.hasExtra(EXTRA_PLACE_DETAILS)) {
             mTestingLocationDetails =
-                intent.getSerializableExtra(EXTRA_PLACE_DETAILS) as TestingLocationModel?
+                intent.getParcelableExtra(EXTRA_PLACE_DETAILS) as TestingLocationModel?
         }
 
         if (mTestingLocationDetails != null) {
