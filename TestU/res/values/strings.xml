@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">TestU</string>
+
+    <string name="google_maps_api_key">AIzaSyBZ1Tu1QTYS5YMs0vUiIpg59VyOaEqfPg4</string>
+    <string name="login_message">Please</string>
+    <string name="edit_text_hint_title">Title</string>
+    <string name="edit_text_hint_description">Description</string>
+    <string name="edit_text_hint_date">Date</string>
+    <string name="edit_text_hint_location">Location</string>
+    <string name="text_add_image">ADD IMAGE</string>
+    <string name="btn_text_save">SAVE</string>
+
+    <string name="note_text_no_testing_locations_found_yet_kindly_add_one">No Testing Locations Found Yet. Click The Button To Add Locations.</string>
+    <string name="image_content_description">image</string>
+
+    <string name="btn_text_view_on_map">VIEW ON MAP</string>
+    <string name="add_place_select_current_location_text">ADD CURRENT LOCATION</string>
+    <string name="confirm_delete">Confirm Delete</string>
+    <string name="delete_confirmation_message">Are you sure you want to delete this item?</string>
+    <string name="app_title">TestU</string>
+    <string name="please_enter_your_name">Please enter your login information.</string>
+    <string name="find_new_testing_location">FIND NEW LOCATION</string>
+</resources>
